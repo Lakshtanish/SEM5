@@ -1,0 +1,203 @@
+Assignment 5.
+
+
+create table studentMarks(rollNum INT Primary Key,name VARCHAR(100),marks INT);
+
+create table result(rollNum INT, name VARCHAR(100), grade VARCHAR(25),foreign key(rollNum) references studentMarks(rollNum));
+
+delimiter //
+create procedure insertStudent(IN r INT,n VARCHAR(100),m INT)
+begin
+insert into studentMarks values(r,n,m);
+End
+//
+delimiter ;
+
+call insertStudent(1,'Aditi',1500);
+call insertStudent(2,'Aditya',1300);
+call insertStudent(3,'Anurag',1400);
+call insertStudent(4,'Asim',990);
+call insertStudent(5,'Aryan',989);
+call insertStudent(6,'Aneesh',900);
+call insertStudent(7,'Abhishek',899);
+call insertStudent(8,'Amit',840);
+call insertStudent(9,'Anay',800);
+
+mysql> select * from studentMarks;
++---------+----------+-------+
+| rollNum | name     | marks |
++---------+----------+-------+
+|       1 | Aditi    |  1500 |
+|       2 | Aditya   |  1300 |
+|       3 | Anurag   |  1400 |
+|       4 | Asim     |   990 |
+|       5 | Aryan    |   989 |
+|       6 | Aneesh   |   900 |
+|       7 | Abhishek |   899 |
+|       8 | Amit     |   840 |
+|       9 | Anay     |   800 |
++---------+----------+-------+
+
+
+
+
+
+
+
+
+DELIMITER //
+
+CREATE PROCEDURE calculateGrade(IN roll INT, OUT class VARCHAR(25))
+BEGIN
+    DECLARE c VARCHAR(25);
+    DECLARE n VARCHAR(25);
+    DECLARE m INT;
+
+    -- Get marks and name based on roll number
+    SELECT marks INTO m FROM studentmarks WHERE rollno = roll;
+    SELECT name INTO n FROM studentmarks WHERE rollno = roll;
+
+    -- Determine grade based on marks
+    IF (m >= 990 AND m <= 1500) THEN
+        SET c = "Distinction";
+    ELSEIF (m >= 900 AND m <= 989) THEN
+        SET c = "First Class";
+    ELSEIF (m >= 825 AND m <= 899) THEN
+        SET c = "Higher Second Class";
+    ELSE
+        SET c = "N/A";
+    END IF;
+
+    -- Insert result into result table (specify column names)
+    INSERT INTO result (rollno, name, grade) VALUES (roll, n, c);
+
+    -- Set the output class parameter
+    SET class = c;
+END //
+
+DELIMITER ;
+
+
+call calculateGrade(1,@class);		
+mysql> select @class;
++--------+
+| @class |
++--------+
+| N/A    |
++--------+
+
+mysql> select * from result;
++--------+---------+-------+
+| rollno | name    | grade |
++--------+---------+-------+
+|      1 | Lakshya | N/A   |
++--------+---------+-------+
+
+ call calculateGrade(2,@class);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @class;
++-------------+
+| @class      |
++-------------+
+| Distinction |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select * from result;
++--------+---------+-------------+
+| rollno | name    | grade       |
++--------+---------+-------------+
+|      1 | Lakshya | N/A         |
+|      2 | Aditya  | Distinction |
++--------+---------+-------------+
+
+DELIMITER //
+
+CREATE FUNCTION displaygrade(roll INT)
+RETURNS VARCHAR(25)
+DETERMINISTIC
+BEGIN
+    DECLARE c VARCHAR(25);
+    DECLARE m INT;
+    DECLARE n VARCHAR(25);
+
+    -- Retrieve marks and name based on roll number
+    SELECT marks INTO m FROM studentmarks WHERE rollno = roll;
+    SELECT name INTO n FROM studentmarks WHERE rollno = roll;
+
+    -- Determine grade based on marks
+    IF (m >= 990 AND m <= 1500) THEN
+        SET c = 'Distinction';
+    ELSEIF (m >= 900 AND m <= 989) THEN
+        SET c = 'First Class';
+    ELSEIF (m >= 825 AND m <= 899) THEN
+        SET c = 'Higher Second Class';
+    ELSE
+        SET c = 'N/A';
+    END IF;
+
+    -- Insert result into the result table
+    INSERT INTO result (rollno, name, grade) VALUES (roll, n, c);
+
+    -- Return the grade
+    RETURN c;
+END //
+
+DELIMITER ;
+
+mysql> select displaygrade(3);
++-----------------+
+| displaygrade(3) |
++-----------------+
+| Distinction     |
++-----------------+
+1 row in set (0.01 sec)
+
+mysql> select * from result;
++--------+---------+-------------+
+| rollno | name    | grade       |
++--------+---------+-------------+
+|      1 | Lakshya | N/A         |
+|      2 | Aditya  | Distinction |
+|      3 | Anurag  | Distinction |
++--------+---------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select displaygrade(4);
++-----------------+
+| displaygrade(4) |
++-----------------+
+| Distinction     |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select * from result;
++--------+---------+-------------+
+| rollno | name    | grade       |
++--------+---------+-------------+
+|      1 | Lakshya | N/A         |
+|      2 | Aditya  | Distinction |
+|      3 | Anurag  | Distinction |
+|      4 | Asim    | Distinction |
++--------+---------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> select displaygrade(5);
++-----------------+
+| displaygrade(5) |
++-----------------+
+| First Class     |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select * from result;
++--------+---------+-------------+
+| rollno | name    | grade       |
++--------+---------+-------------+
+|      1 | Lakshya | N/A         |
+|      2 | Aditya  | Distinction |
+|      3 | Anurag  | Distinction |
+|      4 | Asim    | Distinction |
+|      5 | Aryan   | First Class |
++--------+---------+-------------+

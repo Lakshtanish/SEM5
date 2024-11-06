@@ -1,0 +1,101 @@
+Assignment No 12 
+
+
+Implement Java- MongoDB connectivity and perform CRUD operations through
+the Java program.
+
+package Mongo;
+import java.util.Iterator;
+import java.util.Scanner;
+import org.bson.Document;
+import com.mongodb.*;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+public class MongoDB
+{
+	public static void main(String args[])
+	{
+		try
+		{
+			String url = "mongodb://localhost:27017";
+			MongoClient mongo = new MongoClient(new MongoClientURI(url));
+			System.out.println("Connected Successfully");
+			MongoDatabase db = mongo.getDatabase("lakshyadb");
+			if(db.getCollection("students") == null)
+			{
+				db.createCollection("students");
+			}
+			
+			MongoCollection<Document> collection = db.getCollection("students");
+			Scanner sc = new Scanner(System.in);
+			int ch;
+			while(true)
+			{
+				System.out.println("1.Insert\n2.Update\n3.Delete\n4.Show\n5.Exit");
+				System.out.println("Enter your choice :");
+				ch = sc.nextInt();
+				if(ch == 1)
+				{
+					sc.nextLine();
+					System.out.println("Enter name :");
+					String name = sc.nextLine();
+					System.out.println("Enter age :");
+					int age = sc.nextInt();
+					sc.nextLine();
+					System.out.println("Enter branch :");
+					String branch = sc.nextLine();
+					System.out.println("Enter cgpa :");
+					double cgpa = sc.nextDouble();
+					sc.nextLine();
+					System.out.println("Enter city :");
+					String city = sc.nextLine();
+					Document doc = new Document("name",name).append("age", age).append("branch", branch).append("cgpa", cgpa).append("city", city);
+					collection.insertOne(doc);
+					System.out.println("Record inserted successfully!!");
+				}
+				
+				else if(ch == 2)
+				{
+					sc.nextLine();
+					System.out.println("Enter name :");
+					String name = sc.nextLine();
+					System.out.println("Enter new cgpa :");
+					double cgpa = sc.nextDouble();
+					collection.updateOne(Filters.eq("name",name), Updates.set("cgpa",cgpa));
+					System.out.println("Document updated successfully");
+				}
+				else if(ch == 3)
+				{
+					sc.nextLine()
+					System.out.println("Enter name to delete :");
+					String name = sc.nextLine();
+					collection.deleteOne(Filters.eq("name",name));
+					System.out.println("Record deleted successfully!!");
+				}
+				else if(ch == 4)
+				{
+					System.out.println("Recovering all documents :");
+					FindIterable <Document> iterdoc = collection.find();
+					Iterator itr = iterdoc.iterator();
+					while(itr.hasNext())
+					{
+						System.out.println(itr.next());
+					}
+				}
+				else if(ch == 5)
+				{
+					break;
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			System.out.println("An error occured!!");
+			e.printStackTrace();
+		}
+	}
+}

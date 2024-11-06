@@ -1,0 +1,79 @@
+ASSIGNMENT NO 10
+Roll No: 31339
+PROBLEM STATEMENT: MongoDB Aggregation and Indexing: Design and develop MongoDB queries using aggregation and indexing with suitable examples using MongoDB.
+
+// 1. Switch to or create the 'company' database
+use company;
+
+// 2. Create the 'employees' collection (automatically created on first insert)
+db.createCollection('employees');
+
+// 3. Insert multiple documents into the 'employees' collection
+db.employees.insertMany([
+    { employee_id: 1, name: "Alice Johnson", age: 29, department: "HR", salary: 45000, years_of_experience: 5 },
+    { employee_id: 2, name: "Bob Smith", age: 34, department: "Finance", salary: 55000, years_of_experience: 8 },
+    { employee_id: 3, name: "Catherine Brown", age: 26, department: "IT", salary: 60000, years_of_experience: 3 },
+    { employee_id: 4, name: "David Williams", age: 40, department: "Marketing", salary: 65000, years_of_experience: 15 },
+    { employee_id: 5, name: "Emma Watson", age: 31, department: "IT", salary: 72000, years_of_experience: 10 }
+]);
+
+// 4. Create Indexes
+// Create a unique index on 'employee_id'
+db.employees.createIndex({ employee_id: 1 }, { unique: true });
+
+// Create a compound index on 'department' and 'salary'
+db.employees.createIndex({ department: 1, salary: -1 });
+
+// 5. Perform Aggregation Queries
+
+// Aggregation 1: Group Employees by Department and Calculate Average Salary
+db.employees.aggregate([
+    { $group: { _id: "$department", avgSalary: { $avg: "$salary" } } }
+]);
+
+// Aggregation 2: Count Employees in Each Department
+db.employees.aggregate([
+    { $group: { _id: "$department", employeeCount: { $sum: 1 } } }
+]);
+
+// Aggregation 3: Find the Highest Salary in Each Department
+db.employees.aggregate([
+    { $group: { _id: "$department", maxSalary: { $max: "$salary" } } }
+]);
+
+// Aggregation 4: Filter Employees with Salary > 60,000 and Sort by Years of Experience
+db.employees.aggregate([
+    { $match: { salary: { $gt: 60000 } } }, 
+    { $sort: { years_of_experience: -1 } }
+]);
+
+// Aggregation 5: Calculate the Total Salary for Employees with More than 5 Years of Experience
+db.employees.aggregate([
+    { $match: { years_of_experience: { $gt: 5 } } }, 
+    { $group: { _id: null, totalSalary: { $sum: "$salary" } } }
+]);
+
+// 6. Query Optimization Using Indexes
+
+// Query 1: Find all Employees in the 'IT' Department and Sort by Salary
+db.employees.find({ department: "IT" }).sort({ salary: -1 });
+
+// Query 2: Find Employee by 'employee_id'
+db.employees.find({ employee_id: 2 });
+
+// 7. Check Existing Indexes
+db.employees.getIndexes();
+
+// 8. Drop Indexes (Optional)
+// Drop the index on 'employee_id'
+db.employees.dropIndex({ employee_id: 1 });
+
+// Drop the compound index on 'department' and 'salary'
+db.employees.dropIndex({ department: 1, salary: -1 });
+
+
+
+
+
+
+

@@ -1,0 +1,110 @@
+Assignment no 9
+Design and Develop MongoDB Queries using CRUD operations. (Use
+CRUD operations, SAVE method, logical operators)
+
+// 1. Switch to or create the 'company' database
+use company;
+
+// 2. Create the 'employees' collection (this happens automatically when inserting data)
+db.createCollection('employees');
+
+// 3. Insert (Create) Documents
+
+// Insert a single document
+db.employees.insertOne({
+    employee_id: 1,
+    name: "Alice Johnson",
+    age: 29,
+    department: "HR",
+    salary: 45000
+});
+
+// Insert multiple documents
+db.employees.insertMany([
+    { employee_id: 2, name: "Bob Smith", age: 34, department: "Finance", salary: 55000 },
+    { employee_id: 3, name: "Catherine Brown", age: 26, department: "IT", salary: 60000 }
+]);
+
+// 4. Read (Retrieve) Documents
+
+// Retrieve all documents
+db.employees.find();
+
+// Retrieve documents with a filter (employees in IT department)
+db.employees.find({ department: "IT" });
+
+// Use logical operators (Find employees with age > 25 and salary > 50000)
+db.employees.find({
+    $and: [
+        { age: { $gt: 25 } },
+        { salary: { $gt: 50000 } }
+    ]
+});
+
+// Find employees with age < 30 or working in 'HR'
+db.employees.find({
+    $or: [
+        { age: { $lt: 30 } },
+        { department: "HR" }
+    ]
+});
+
+// 5. Update Documents
+
+// Update salary of employee with employee_id 1
+db.employees.updateOne(
+    { employee_id: 1 },
+    { $set: { salary: 48000 } }
+);
+
+// Update all employees in the 'Finance' department to increase salary by 5000
+db.employees.updateMany(
+    { department: "Finance" },
+    { $inc: { salary: 5000 } }
+);
+
+// 6. Save Method (Insert or Update)
+
+// Insert a new document (if _id doesn't exist)
+db.employees.save({
+    employee_id: 4,
+    name: "David Williams",
+    age: 40,
+    department: "Marketing",
+    salary: 65000
+});
+
+// Update an existing document with the same _id
+db.employees.save({
+    _id: ObjectId("existing_employee_id"),
+    employee_id: 1,
+    name: "Alice Johnson",
+    age: 29,
+    department: "HR",
+    salary: 50000  // updated salary
+});
+
+// 7. Delete Documents
+
+// Delete a single document (employee with employee_id 1)
+db.employees.deleteOne({ employee_id: 1 });
+
+// Delete multiple documents (all employees in the 'IT' department)
+db.employees.deleteMany({ department: "IT" });
+
+// 8. Use Aggregation to analyze data
+
+// Group employees by department and calculate average salary
+db.employees.aggregate([
+    { $group: { _id: "$department", avgSalary: { $avg: "$salary" } } }
+]);
+
+
+
+
+
+
+
+
+
+

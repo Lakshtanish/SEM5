@@ -1,0 +1,105 @@
+Title:
+Cursors: (All types: Implicit, Explicit, Cursor FOR Loop, Parameterized Cursor) Write a
+    PLUSQL block of code using parameterized Cursor, that will merge the data available in
+the newly created table N Empld with the data available in the table O_Empld. If the data
+in the first table already exist in the second table then that data should be skipped.
+create table o_emp(o_eid int,o_name varchar(20),o_comp varchar(20));
+insert into o_emp values(12,'pritika','A'),(14,'soumya','B'),(25,'gauri','C'),(43,'rabiya','D');
+select* from o_emp;
++-------+---------+--------+
+| o_eid | o_name | o_comp |
++-------+---------+--------+
+| 12 | pritika | A |
+| 14 | soumya | B |
+| 25 | gauri | C |
+| 43 | rabiya | D |
++-------+---------+--------+
+4 rows in set (0.00 sec)
+create table n_emp(n_eid int,n_name varchar(20),n_comp varchar(20));
+insert into n_emp values(14,'soumya','B'),(12,'pritika','A');
+select* from n_emp;
++-------+---------+--------+
+| n_eid | n_name | n_comp |
++-------+---------+--------+
+| 14 | soumya | B |
+| 12 | pritika | A |
++-------+---------+--------+
+2 rows in set (0.00 sec)
+
+----- Normal Cursor -------
+delimiter %
+create procedure shift_normal()
+begin
+declare eid int;
+declare finish int default 0;
+declare name varchar(20);
+declare comp varchar(20);
+-- Fixed range for the cursor --
+
+declare curs cursor for select * from o_emp where o_eid between 12 and 169;
+declare continue handler for not found set finish=1;
+open curs;
+l:loop
+fetch curs into eid, name, comp;
+if finish = 1 then
+leave l;
+end if;
+if eid not in (select n_eid from n_emp) then
+insert into n_emp values(eid, name, comp);
+end if;
+end loop;
+close curs;
+end % delimiter;
+---- Calling Normal Cursor --------
+call shift_normal();
+select * from n_emp;
++-------+---------+--------+
+| n_eid | n_name | n_comp |
++-------+---------+--------+
+| 14 | soumya | B |
+| 12 | pritika | A |
+| 25 | gauri | C |
+| 43 | rabiya | D |
++-------+---------+--------+
+4 rows in set (0.00 sec)
+------- Parameterized Cursor --------
+delimiter %
+create procedure shift_par(in lb int,in ub int)
+
+begin
+declare eid int;
+declare finish int default 0;
+declare name varchar(20);
+declare comp varchar(20);
+declare curs cursor for select * from o_emp where o_eid between lb and ub;
+declare continue handler for not found
+begin
+set finish=1;
+end;
+
+open curs;
+l:loop
+fetch curs into eid,name,comp;
+if(finish=1) then
+leave l;
+end if;
+if(eid not in (select n_eid from n_emp)) then
+insert into n_emp values(eid,name,comp);
+end if;
+end loop;
+close curs;
+end %
+delimiter;
+-------Calling Parameterized Cursor-------------
+call shift_par(12,169);
+select * from n_emp;
++-------+---------+--------+
+| n_eid | n_name | n_comp |
++-------+---------+--------+
+| 14 | soumya | B |
+| 12 | pritika | A |
+| 25 | gauri | C |
+| 43 | rabiya | D |
++-------+---------+--------+
+4 rows in set (0.00 sec)
+

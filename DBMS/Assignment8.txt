@@ -1,0 +1,108 @@
+package JDBC_Example;
+import java.sql.*;
+import java.util.Scanner;
+public class JDBC
+{
+	public static void main(String args[]) throws SQLException
+	{
+		try
+		{
+			Connection con = null;
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/assignment8","root","Lakshya@#$123");
+			if(con != null)
+			{
+				System.out.println("Connected..");
+			}
+			
+			Scanner sc = new Scanner(System.in);
+			
+			while(true)
+			{
+				System.out.println("1.Read Table");
+				System.out.println("2.Insert Entry");
+				System.out.println("3.Update Entry");
+				System.out.println("4.Delete Entry");
+				System.out.println("5.Exit");
+				System.out.println("Enter your choice :");
+				int ch = sc.nextInt();
+				
+				if(ch == 1)
+				{
+					String query = "SELECT * FROM library";
+					Statement statement = con.createStatement();
+					ResultSet result = statement.executeQuery(query);
+					while(result.next())
+					{
+						int roll = result.getInt(1);
+						String name = result.getString(2);
+						String date = result.getString(3);
+                       String bookname = result.getString(4);
+                       System.out.println(roll + " " + name + " " + date + " " + bookname);
+					}
+				}
+				else if(ch == 2)
+				{
+					String sql = "INSERT INTO library values(? , ? , ? , ?)";
+					PreparedStatement statement = con.prepareStatement(sql);
+					java.util.Date date = new java.util.Date();
+					java.sql.Date sqldate = new java.sql.Date(date.getTime());
+					System.out.println("Enter Roll Number , Name and Bookname");
+					int roll = sc.nextInt();
+					sc.nextLine();
+					String name = sc.nextLine();
+					String bookname = sc.nextLine();
+					statement.setInt(1, roll);
+					statement.setString(2, name);
+					statement.setDate(3, sqldate);
+					statement.setString(4, bookname);
+					int rowsInserted = statement.executeUpdate();
+					if(rowsInserted > 0)
+					{
+						System.out.println("A new record was inserted successfully!!");
+					}
+				}
+				else if(ch == 3)
+				{
+					String sql = "UPDATE library set bookname=?,date=? where roll=?";
+					PreparedStatement statement = con.prepareStatement(sql);
+					System.out.println("Enter roll number :");
+					statement.setInt(3, sc.nextInt());
+					sc.nextLine();
+					System.out.println("Enter new bookname :");
+					statement.setString(1,sc.nextLine());
+					java.util.Date date=new java.util.Date();
+                   java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+                   statement.setDate(2, sqlDate);
+                   int rowsupdate = statement.executeUpdate();
+                   if(rowsupdate > 0)
+                   {
+                   	System.out.println("A record has been updated successfully.");
+                   }
+				}
+				else if(ch == 4)
+				{
+					String sql = "DELETE FROM library where roll=?";
+					PreparedStatement statement = con.prepareStatement(sql);
+					System.out.println("Enter roll number :");
+					statement.setInt(1, sc.nextInt());
+					int rowsdeleted = statement.executeUpdate();
+					if(rowsdeleted>0)
+					{
+						System.out.println("Rows deleted successfully!!");
+					}
+				}
+				else if(ch == 5)
+				{
+					sc.close();
+					break;
+				}
+			}
+		}
+		catch(SQLException e)
+		{
+			System.out.println("An error has occured!!");
+			e.printStackTrace();
+		}
+	}
+}
+

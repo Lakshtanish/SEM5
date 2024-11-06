@@ -1,0 +1,90 @@
+ASSIGNMENT NO 11
+Roll No: 31339
+PROBLEM STATEMENT: MongoDB Map-Reduce Operations: Implement Map-Reduce operations with suitable examples using MongoDB.
+db.pay.insert({Cust_ID: "A123", Product: "Milk", Amount: 40, Status: "P"});
+db.pay.insert({Cust_ID: "A123", Product: "Parle_G", Amount: 50, Status: "NP"});
+db.pay.insert({Cust_ID: "A123", Product: "Lays Chips", Amount: 40, Status: "P"});
+db.pay.insert({Cust_ID: "B123", Product: "Mentos", Amount: 10, Status: "P"});
+db.pay.insert({Cust_ID: "B123", Product: "Maggie", Amount: 60, Status: "NP"})
+
+
+27017> db.pay.find();
+[
+  {
+    _id: ObjectId('6729c1d7427032b87dc73bfc'),
+    Cust_ID: 'A123',
+    Product: 'Milk',
+    Amount: 40,
+    Status: 'P'
+  },
+  {
+    _id: ObjectId('6729c1d7427032b87dc73bfd'),
+    Cust_ID: 'A123',
+    Product: 'Parle_G',
+    Amount: 50,
+    Status: 'NP'
+  },
+  {
+    _id: ObjectId('6729c1d7427032b87dc73bfe'),
+    Cust_ID: 'A123',
+    Product: 'Lays Chips',
+    Amount: 40,
+    Status: 'P'
+  },
+  {
+    _id: ObjectId('6729c1d7427032b87dc73bff'),
+    Cust_ID: 'B123',
+    Product: 'Mentos',
+    Amount: 10,
+    Status: 'P'
+  },
+  {
+    _id: ObjectId('6729c1d7427032b87dc73c00'),
+    Cust_ID: 'B123',
+    Product: 'Maggie',
+    Amount: 60,
+    Status: 'NP'
+  }
+]
+
+
+db.pay.insert({Cust_ID: "A123", Product: "Milk", Amount: 40, Status: "P"});
+db.pay.insert({Cust_ID: "A123", Product: "Parle_G", Amount: 50, Status: "NP"});
+db.pay.insert({Cust_ID: "A123", Product: "Lays Chips", Amount: 40, Status: "P"});
+db.pay.insert({Cust_ID: "B123", Product: "Mentos", Amount: 10, Status: "P"});
+db.pay.insert({Cust_ID: "B123", Product: "Maggie", Amount: 60, Status: "NP"});
+
+db.pay.find();
+
+db.pay.mapReduce(
+    function() {
+        emit(this.Cust_ID, this.Amount);
+    },
+    function(key, values) {
+        return Array.sum(values);
+    },
+    {
+        query: {"Status": "NP"},
+        out: "Amount"
+    }
+);
+
+var mapFunc1 = function() {
+    emit(this.Cust_ID, this.Amount);
+};
+
+var reduceFunc1 = function(keyCustID, valuePrices) {
+    return Array.sum(valuePrices);
+};
+
+db.pay.mapReduce(mapFunc1, reduceFunc1, {out: "Map"});
+
+db.Bill_Amount.find();
+27017> db.Bill_Amount.find();
+[ { _id: 'A123', value: 50 }, { _id: 'B123', value: 60 } ]
+
+
+db.Map.find();
+
+27017> db.Map.find();
+[ { _id: 'A123', value: 130 }, { _id: 'B123', value: 70 } ]
