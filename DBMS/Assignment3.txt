@@ -1,285 +1,127 @@
-mysql> create database assignment1
+create database assignment3;
+use assignment3;
 
-mysql> use assignment1;
-
-mysql> create table dept(deptid int primary key,deptname varchar(100),deptlocation varchar(100));
-
-mysql> create table employee(empid int primary key,deptid int,empfname varchar(50),emplname varchar(50),empposition varchar(50),empsalary int,empjoindate DATE,foreign key(deptid) references dept(deptid) on delete cascade);
-
-
-mysql> create table project(projid int primary key,deptid int,projname varchar(50),projlocation varchar(50),projcost int,projyear DATE,foreign key(deptid) references dept(deptid) on delete cascade);
-
-mysql> delimiter //
-mysql> create procedure insert_dept(IN id int,IN name varchar(50),IN location varchar(50))
-    -> BEGIN
-    ->      insert into dept values(id,name,location);
-    -> END
-    -> //
-
-mysql> call insert_dept(1, 'Computer', 'Pune');
-mysql> call insert_dept(2, 'IT', 'Pune');
-Query OK, 1 row affected (0.01 sec)
-
-mysql> call insert_dept(3, 'HR', 'Mumbai');
-Query OK, 1 row affected (0.00 sec)
-
-mysql> call insert_dept(4, 'Finance', 'Delhi');
-Query OK, 1 row affected (0.00 sec)
-
-mysql> call insert_dept(5, 'Marketing', 'Bangalore');
-Query OK, 1 row affected (0.00 sec)
-
-mysql> call insert_dept(6, 'Operations', 'Hyderabad');
-Query OK, 1 row affected (0.01 sec)
-
-mysql> call insert_dept(7, 'Sales', 'Chennai');
-Query OK, 1 row affected (0.01 sec)
-
-mysql> call insert_dept(8, 'R&D', 'Pune');
-Query OK, 1 row affected (0.01 sec)
-
-mysql> call insert_dept(9, 'Logistics', 'Mumbai');
-Query OK, 1 row affected (0.00 sec)
-
-mysql> call insert_dept(10, 'Admin', 'Kolkata');
-Query OK, 1 row affected (0.01 sec)
+create table dept(deptid int primary key,dept_name varchar(50),dept_location varchar(50));
+create table Employee(empid int primary key,deptid int,emp_fname varchar(50),emp_lname varchar(50),emp_pos varchar(50),emp_salary decimal (10,2),emp_joindate date,  foreign key (deptid) references dept(deptid) on delete cascade);
+create table project(projid int primary key,deptid int,proj_name varchar(50),proj_location varchar(50),proj_cost decimal(15,2),proj_year year, foreign key (deptid) references dept(deptid) on delete cascade);
+INSERT INTO Dept VALUES
+(1, 'Computer', 'Pune'),
+(2, 'IT', 'Pune'),
+(3, 'HR', 'Mumbai'),
+(4, 'Finance', 'Delhi'),
+(5, 'Marketing', 'Bangalore'),
+(6, 'Operations', 'Hyderabad'),
+(7, 'Sales', 'Chennai'),
+(8, 'R&D', 'Pune'),
+(9, 'Logistics', 'Mumbai'),
+(10, 'Admin', 'Kolkata');
 
 
-
-mysql> select * from dept;`
-+--------+------------+--------------+
-| deptid | deptname   | deptlocation |
-+--------+------------+--------------+
-|      1 | Computer   | Pune         |
-|      2 | IT         | Pune         |
-|      3 | HR         | Mumbai       |
-|      4 | Finance    | Delhi        |
-|      5 | Marketing  | Bangalore    |
-|      6 | Operations | Hyderabad    |
-|      7 | Sales      | Chennai      |
-|      8 | R&D        | Pune         |
-|      9 | Logistics  | Mumbai       |
-|     10 | Admin      | Kolkata      |
-+--------+------------+--------------+
+INSERT INTO Employee  VALUES
+(101, 1, 'Peter', 'Smith', 'Manager', 75000, '1984-05-10'),
+(102, 2, 'Helen', 'Jones', 'Developer', 55000, '1990-06-25'),
+(103, 1, 'Paul', 'Williams', 'Analyst', 45000, '1982-07-20'),
+(104, 3, 'John', 'Doe', 'HR Specialist', 60000, '1995-08-15'),
+(105, 4, 'Priya', 'Kumar', 'Finance Officer', 70000, '1983-11-05'),
+(106, 2, 'Hannah', 'Brown', 'Lead Developer', 65000, '1992-01-12'),
+(107, 5, 'Harold', 'Davis', 'Marketing Manager', 50000, '1981-03-08'),
+(108, 6, 'Paul', 'Miller', 'Operations Head', 90000, '1998-09-25'),
+(109, 1, 'Harry', 'Taylor', 'System Administrator', 52000, '1999-12-30'),
+(110, 7, 'Penny', 'Walker', 'Sales Executive', 48000, '2000-04-18');
 
 
-mysql> INSERT INTO Employee  VALUES
-     (101, 1, 'Peter', 'Smith', 'Manager', 75000, '1984-05-10'),
-     (102, 2, 'Helen', 'Jones', 'Developer', 55000, '1990-06-25'),
-     (103, 1, 'Paul', 'Williams', 'Analyst', 45000, '1982-07-20'),
-     (104, 3, 'John', 'Doe', 'HR Specialist', 60000, '1995-08-15'),
-     (105, 4, 'Priya', 'Kumar', 'Finance Officer', 70000, '1983-11-05'),
-     (106, 2, 'Hannah', 'Brown', 'Lead Developer', 65000, '1992-01-12'),
-     (107, 5, 'Harold', 'Davis', 'Marketing Manager', 50000, '1981-03-08'),
-     (108, 6, 'Paul', 'Miller', 'Operations Head', 90000, '1998-09-25'),
-     (109, 1, 'Harry', 'Taylor', 'System Administrator', 52000, '1999-12-30'),
-     (110, 7, 'Penny', 'Walker', 'Sales Executive', 48000, '2000-04-18');
+INSERT INTO Project  VALUES
+(201, 1, 'AI Research', 'Pune', 450000, 2004),
+(202, 2, 'Cloud Migration', 'Pune', 350000, 2005),
+(203, 3, 'Employee Engagement', 'Mumbai', 150000, 2007),
+(204, 4, 'Finance System', 'Delhi', 400000, 2003),
+(205, 5, 'Market Analysis', 'Bangalore', 250000, 2006),
+(206, 6, 'Supply Chain', 'Hyderabad', 300000, 2005),
+(207, 7, 'Sales Optimization', 'Chennai', 200000, 2007),
+(208, 8, 'Product Development', 'Pune', 500000, 2004),
+(209, 9, 'Logistics Management', 'Mumbai', 100000, 2008),
+(210, 2, 'Security Enhancements', 'Pune', 600000, 2007);
+
+-- Find Employee details and Department details using NATURAL JOIN.
+select * from Employee e natural join Dept d ;
+
+--  Find the emp_fname,Emp_position,location,Emp_JoinDate who have same Dept id.
+select e.emp_fname,e.emp_pos,d.dept_location,e.emp_joindate from Employee e inner join Dept d on e.deptid=d.deptid;
 
 
-mysql> select * from employee;
-+-------+--------+----------+----------+----------------------+-----------+-------------+
-| empid | deptid | empfname | emplname | empposition          | empsalary | empjoindate |
-+-------+--------+----------+----------+----------------------+-----------+-------------+
-|   101 |      1 | Peter    | Smith    | Manager              |     75000 | 1984-05-10  |
-|   102 |      2 | Helen    | Jones    | Developer            |     55000 | 1990-06-25  |
-|   103 |      1 | Paul     | Williams | Analyst              |     45000 | 1982-07-20  |
-|   104 |      3 | John     | Doe      | HR Specialist        |     60000 | 1995-08-15  |
-|   105 |      4 | Priya    | Kumar    | Finance Officer      |     70000 | 1983-11-05  |
-|   106 |      2 | Hannah   | Brown    | Lead Developer       |     65000 | 1992-01-12  |
-|   107 |      5 | Harold   | Davis    | Marketing Manager    |     50000 | 1981-03-08  |
-|   108 |      6 | Paul     | Miller   | Operations Head      |     90000 | 1998-09-25  |
-|   109 |      1 | Harry    | Taylor   | System Administrator |     52000 | 1999-12-30  |
-|   110 |      7 | Penny    | Walker   | Sales Executive      |     48000 | 2000-04-18  |
-+-------+--------+----------+----------+----------------------+-----------+-------------+
-10 rows in set (0.00 sec)
+-- Find the Employee details ,Proj_id,Project cost who does not have Project location as â€˜Hyderabadâ€™. 
+select  distinct e.*,p.projid,p.proj_cost from Employee e inner join Project p on e.deptid=p.deptid where proj_location not in ("Hyderabad");
+-- Find Department Name ,employee name, Emp_position for which project year is 2020
+select d.dept_name,e.emp_fname,e.emp_pos,p.proj_year from Employee e inner join Dept d on  d.deptid=e.deptid inner join Project p  on e.deptid=p.deptid where proj_year=2004;
+-- Display emp_position,D_name who have Project cost >30000
+select d.dept_name,e.emp_pos from Employee e inner join Dept d on  d.deptid=e.deptid inner join Project p  on e.deptid=p.deptid where proj_cost >400000;
 
+-- Find the names of all the Projects that started in the year 2015.
+select proj_name from Project where proj_year=2004;
 
-mysql> ALTER TABLE project MODIFY COLUMN projyear YEAR;
-Query OK, 0 rows affected (0.10 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> INSERT INTO Project  VALUES
-     (201, 1, 'AI Research', 'Pune', 450000, 2004),
-     (202, 2, 'Cloud Migration', 'Pune', 350000, 2005),
-     (203, 3, 'Employee Engagement', 'Mumbai', 150000, 2007),
-     (204, 4, 'Finance System', 'Delhi', 400000, 2003),
-     (205, 5, 'Market Analysis', 'Bangalore', 250000, 2006),
-     (206, 6, 'Supply Chain', 'Hyderabad', 300000, 2005),
-     (207, 7, 'Sales Optimization', 'Chennai', 200000, 2007),
-     (208, 8, 'Product Development', 'Pune', 500000, 2004),
-     (209, 9, 'Logistics Management', 'Mumbai', 100000, 2008),
-     (210, 2, 'Security Enhancements', 'Pune', 600000, 2007);
-Query OK, 10 rows affected (0.00 sec)
-Records: 10  Duplicates: 0  Warnings: 0
+-- List the Dept_name having no_of_emp=10
+select d.dept_name , e.emp_fname from Employee e inner join Dept d on e.deptid=d.deptid  group by d.dept_name  having  count(e.empid)=2;
 
 
 
-mysql> select * from project;
-+--------+--------+-----------------------+--------------+----------+----------+
-| projid | deptid | projname              | projlocation | projcost | projyear |
-+--------+--------+-----------------------+--------------+----------+----------+
-|    201 |      1 | AI Research           | Pune         |   450000 |     2004 |
-|    202 |      2 | Cloud Migration       | Pune         |   350000 |     2005 |
-|    203 |      3 | Employee Engagement   | Mumbai       |   150000 |     2007 |
-|    204 |      4 | Finance System        | Delhi        |   400000 |     2003 |
-|    205 |      5 | Market Analysis       | Bangalore    |   250000 |     2006 |
-|    206 |      6 | Supply Chain          | Hyderabad    |   300000 |     2005 |
-|    207 |      7 | Sales Optimization    | Chennai      |   200000 |     2007 |
-|    208 |      8 | Product Development   | Pune         |   500000 |     2004 |
-|    209 |      9 | Logistics Management  | Mumbai       |   100000 |     2008 |
-|    210 |      2 | Security Enhancements | Pune         |   600000 |     2007 |
-+--------+--------+-----------------------+--------------+----------+----------+
-10 rows in set (0.00 sec)
+-- Change SQL mode for the current session (e.g., disable strict mode)
+SET SESSION sql_mode = '';
+
+-- This query retrieves the total number of unique employees
+-- who have joined any project before 2009
+SELECT COUNT(DISTINCT e.empid) AS total_employees
+FROM Employee e
+INNER JOIN Project p ON e.deptid = p.deptid
+WHERE p.proj_year < 2009;
+
+
+-- Create a view to show employee and department details
+-- Create a view to show employee and department details without column name conflicts
+CREATE VIEW EmployeeDeptView AS
+SELECT 
+    e.empid,
+    e.emp_fname,
+    e.emp_lname,
+    e.emp_pos,
+    e.emp_salary,
+    e.emp_joindate,
+    d.deptid AS department_id,
+    d.dept_name AS department_name,
+    d.dept_location AS department_location
+FROM Employee e
+INNER JOIN Dept d ON e.deptid = d.deptid;
+select * from EmployeeDeptView;
+
+-- Delete an employee   XXXXXX
+DELETE FROM EmployeeDeptView
+WHERE emp_id = 2001;
+-- Update the salary of an employee YYYYYYYY
+UPDATE EmployeeDeptView
+SET emp_salary = 80000
+WHERE empid = 2001;
+-- Drop the view
+DROP VIEW EmployeeDeptView;
+-- Create a simple view showing Employee details
+CREATE VIEW SimpleEmployeeView AS
+SELECT empid, emp_fname, emp_lname, emp_pos, emp_salary, emp_joindate
+FROM Employee;
+select * from SimpleEmployeeView;
+
+-- Insert a new record into the view (actually inserts into the Employee table)
+INSERT INTO SimpleEmployeeView (empid, emp_fname, emp_lname, emp_pos, emp_salary, emp_joindate)
+VALUES (4, 'Tom', 'Harris', 'Developer', 70000, '2024-05-01');
+-- Update an existing record in the view
+UPDATE SimpleEmployeeView
+SET emp_salary = 75000
+WHERE empid = 4;
+-- Delete a record from the view
+DELETE FROM SimpleEmployeeView
+WHERE empid = 4;
+-- Drop the view
+DROP VIEW SimpleEmployeeView;
 
 
 
 
-
--- Display all Employee details with Department ‘Computer’ and ‘IT’ and Employee first name starting with 'p' or 'h'.
-
-mysql> select * from employee where deptid in (select deptid from dept where deptname = 'Computer' or deptname = 'IT') and (empfname like 'p%' or empfname like 'h%');
-+-------+--------+----------+----------+----------------------+-----------+-------------+
-| empid | deptid | empfname | emplname | empposition          | empsalary | empjoindate |
-+-------+--------+----------+----------+----------------------+-----------+-------------+
-|   101 |      1 | Peter    | Smith    | Manager              |     75000 | 1984-05-10  |
-|   103 |      1 | Paul     | Williams | Analyst              |     45000 | 1982-07-20  |
-|   109 |      1 | Harry    | Taylor   | System Administrator |     52000 | 1999-12-30  |
-|   102 |      2 | Helen    | Jones    | Developer            |     55000 | 1990-06-25  |
-|   106 |      2 | Hannah   | Brown    | Lead Developer       |     65000 | 1992-01-12  |
-+-------+--------+----------+----------+----------------------+-----------+-------------+
-
-
--- lists the number of different Employee Positions.
-
-mysql> select empposition,count(*) as position_count from employee group by empposition;
-+----------------------+----------------+
-| empposition          | position_count |
-+----------------------+----------------+
-| Manager              |              1 |
-| Developer            |              1 |
-| Analyst              |              1 |
-| HR Specialist        |              1 |
-| Finance Officer      |              1 |
-| Lead Developer       |              1 |
-| Marketing Manager    |              1 |
-| Operations Head      |              1 |
-| System Administrator |              1 |
-| Sales Executive      |              1 |
-+----------------------+----------------+
-10 rows in set (0.00 sec)
-
--- Give 10% increase in Salary of the Employee whose joining year is before 1985.
-
-mysql> update employee set empsalary = empsalary*1.1 where year(empjoindate) < 1985;
-Query OK, 4 rows affected (0.00 sec)
-Rows matched: 4  Changed: 4  Warnings: 0
-
-mysql> select * from employee;
-+-------+--------+----------+----------+----------------------+-----------+-------------+
-| empid | deptid | empfname | emplname | empposition          | empsalary | empjoindate |
-+-------+--------+----------+----------+----------------------+-----------+-------------+
-|   101 |      1 | Peter    | Smith    | Manager              |     82500 | 1984-05-10  |
-|   102 |      2 | Helen    | Jones    | Developer            |     55000 | 1990-06-25  |
-|   103 |      1 | Paul     | Williams | Analyst              |     49500 | 1982-07-20  |
-|   104 |      3 | John     | Doe      | HR Specialist        |     60000 | 1995-08-15  |
-|   105 |      4 | Priya    | Kumar    | Finance Officer      |     77000 | 1983-11-05  |
-|   106 |      2 | Hannah   | Brown    | Lead Developer       |     65000 | 1992-01-12  |
-|   107 |      5 | Harold   | Davis    | Marketing Manager    |     55000 | 1981-03-08  |
-|   108 |      6 | Paul     | Miller   | Operations Head      |     90000 | 1998-09-25  |
-|   109 |      1 | Harry    | Taylor   | System Administrator |     52000 | 1999-12-30  |
-|   110 |      7 | Penny    | Walker   | Sales Executive      |     48000 | 2000-04-18  |
-+-------+--------+----------+----------+----------------------+-----------+-------------+
-10 rows in set (0.00 sec)
-
--- Delete Department details which location is ‘Mumbai’.
-mysql>  delete from dept where deptlocation = 'Mumbai';
-Query OK, 2 rows affected (0.01 sec)
-
-mysql> select * from dept;
-+--------+------------+--------------+
-| deptid | deptname   | deptlocation |
-+--------+------------+--------------+
-|      1 | Computer   | Pune         |
-|      2 | IT         | Pune         |
-|      4 | Finance    | Delhi        |
-|      5 | Marketing  | Bangalore    |
-|      6 | Operations | Hyderabad    |
-|      7 | Sales      | Chennai      |
-|      8 | R&D        | Pune         |
-|     10 | Admin      | Kolkata      |
-+--------+------------+--------------+
-8 rows in set (0.00 sec)
-
--- Find the names of Projects with location ‘pune’ .
-mysql> select projname from project where projlocation = 'pune';
-+-----------------------+
-| projname              |
-+-----------------------+
-| AI Research           |
-| Cloud Migration       |
-| Product Development   |
-| Security Enhancements |
-+-----------------------+
-4 rows in set (0.00 sec)
-
-
--- Find the project having cost in between 100000 to 500000
-mysql> select * from project where projcost between 100000 and 500000;
-+--------+--------+---------------------+--------------+----------+----------+
-| projid | deptid | projname            | projlocation | projcost | projyear |
-+--------+--------+---------------------+--------------+----------+----------+
-|    201 |      1 | AI Research         | Pune         |   450000 |     2004 |
-|    202 |      2 | Cloud Migration     | Pune         |   350000 |     2005 |
-|    204 |      4 | Finance System      | Delhi        |   400000 |     2003 |
-|    205 |      5 | Market Analysis     | Bangalore    |   250000 |     2006 |
-|    206 |      6 | Supply Chain        | Hyderabad    |   300000 |     2005 |
-|    207 |      7 | Sales Optimization  | Chennai      |   200000 |     2007 |
-|    208 |      8 | Product Development | Pune         |   500000 |     2004 |
-+--------+--------+---------------------+--------------+----------+----------+
-7 rows in set (0.00 sec)
-
-
--- Find the project having maximum price and find average of Project cost
-
-mysql> select max(projcost) as maximum_cost,avg(projcost) as avg_cost from project;
-+--------------+-------------+
-| maximum_cost | avg_cost    |
-+--------------+-------------+
-|       600000 | 381250.0000 |
-+--------------+-------------+
-1 row in set (0.01 sec)
-
--- Display all employees with their Emp_id and Emp_name in decreasing order of Emp_lname
-
-mysql> select empid,empfname from employee order by emplname desc;
-+-------+----------+
-| empid | empfname |
-+-------+----------+
-|   103 | Paul     |
-|   110 | Penny    |
-|   109 | Harry    |
-|   101 | Peter    |
-|   108 | Paul     |
-|   105 | Priya    |
-|   102 | Helen    |
-|   107 | Harold   |
-|   106 | Hannah   |
-+-------+----------+
-9 rows in set (0.00 sec)
-
--- Display Proj_name,Proj_location ,Proj_cost of all project started in 2004,2005,2007
-
-mysql> select projname,projlocation,projcost from project where projyear in(2004,2005,2007);
-+-----------------------+--------------+----------+
-| projname              | projlocation | projcost |
-+-----------------------+--------------+----------+
-| AI Research           | Pune         |   450000 |
-| Cloud Migration       | Pune         |   350000 |
-| Supply Chain          | Hyderabad    |   300000 |
-| Sales Optimization    | Chennai      |   200000 |
-| Product Development   | Pune         |   500000 |
-| Security Enhancements | Pune         |   600000 |
-+-----------------------+--------------+----------+
-6 rows in set (0.00 sec)
-
-
+3.sql
+Displaying 3.
