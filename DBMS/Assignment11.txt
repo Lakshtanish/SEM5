@@ -47,13 +47,6 @@ db.pay.insert({Cust_ID: "B123", Product: "Maggie", Amount: 60, Status: "NP"})
   }
 ]
 
-
-db.pay.insert({Cust_ID: "A123", Product: "Milk", Amount: 40, Status: "P"});
-db.pay.insert({Cust_ID: "A123", Product: "Parle_G", Amount: 50, Status: "NP"});
-db.pay.insert({Cust_ID: "A123", Product: "Lays Chips", Amount: 40, Status: "P"});
-db.pay.insert({Cust_ID: "B123", Product: "Mentos", Amount: 10, Status: "P"});
-db.pay.insert({Cust_ID: "B123", Product: "Maggie", Amount: 60, Status: "NP"});
-
 db.pay.find();
 
 db.pay.mapReduce(
