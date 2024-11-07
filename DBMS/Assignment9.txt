@@ -63,27 +63,6 @@ db.employees.updateMany(
     { $inc: { salary: 5000 } }
 );
 
-// 6. Save Method (Insert or Update)
-
-// Insert a new document (if _id doesn't exist)
-db.employees.save({
-    employee_id: 4,
-    name: "David Williams",
-    age: 40,
-    department: "Marketing",
-    salary: 65000
-});
-
-// Update an existing document with the same _id
-db.employees.save({
-    _id: ObjectId("existing_employee_id"),
-    employee_id: 1,
-    name: "Alice Johnson",
-    age: 29,
-    department: "HR",
-    salary: 50000  // updated salary
-});
-
 // 7. Delete Documents
 
 // Delete a single document (employee with employee_id 1)
@@ -98,13 +77,3 @@ db.employees.deleteMany({ department: "IT" });
 db.employees.aggregate([
     { $group: { _id: "$department", avgSalary: { $avg: "$salary" } } }
 ]);
-
-
-
-
-
-
-
-
-
-
