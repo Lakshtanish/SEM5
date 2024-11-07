@@ -25,16 +25,16 @@ END
 //
 DELIMITER;
 
-call insert_student(1,'Aditi','2021-08-15','JAVA','I');
-call insert_student(2,'Aditya','2021-08-01','DBMS','I');
-call insert_student(3,'Anurag','2021-08-31','TOC','I');
-call insert_student(4,'Asim','2021-09-10','CNS','I');
-call insert_student(5,'Aryan','2021-09-04','DS','I');
-call insert_student(6,'Aneesh','2021-08-20','HCI','I');
-call insert_student(7,'Abhishek','2021-08-13','PYTHON','I');
+CALL insert_student(1, 'Aditi', '2024-08-15', 'JAVA', 'I');
+CALL insert_student(2, 'Aditya', '2024-08-01', 'DBMS', 'I');
+CALL insert_student(3, 'Anurag', '2024-08-31', 'TOC', 'I');
+CALL insert_student(4, 'Asim', '2024-09-10', 'CNS', 'I');
+CALL insert_student(5, 'Aryan', '2024-09-04', 'DS', 'I');
+CALL insert_student(6, 'Aneesh', '2024-08-20', 'HCI', 'I');
+CALL insert_student(7, 'Abhishek', '2024-08-13', 'PYTHON', 'I');
+
 
 mysql> select * from borrower;
-    -> //
 +--------+----------+------------+-----------+--------+
 | rollno | name     | issue_date | book_name | status |
 +--------+----------+------------+-----------+--------+
@@ -48,7 +48,7 @@ mysql> select * from borrower;
 +--------+----------+------------+-----------+--------+
 
 DELIMITER //
-create procedure calculate_fine(IN rno INT, n VARCHAR(10))
+create procedure calculate_fine(IN rno INT,IN n VARCHAR(10))
 BEGIN
 declare i_date DATE;
 declare day_diff INT;
@@ -61,8 +61,8 @@ set fine_amt = day_diff * 5;
 insert into fine values(rno,CURDATE(),fine_amt);
 ELSEIF (day_diff > 30) THEN
 set fine_amt = day_diff * 50;
-insert into fine values(rno,CURDATE(),fine_amt);
 END IF;
+insert into fine values(rno,CURDATE(),fine_amt);
 update borrower set status ='R' where rollno = rno and name=n;
 END;
 //
@@ -123,7 +123,7 @@ BEGIN
 
     WHILE v_radius <= 9 DO
         SET v_area = 3.14159 * POWER(v_radius, 2);
-        INSERT INTO areas (radius, area) VALUES (v_radius, v_area);
+        INSERT INTO areas VALUES (v_radius, v_area);
         SET v_radius = v_radius + 1;
     END WHILE;
 
