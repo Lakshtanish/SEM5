@@ -63,7 +63,7 @@ select * from n_emp;
 +-------+---------+--------+
 4 rows in set (0.00 sec)
 ------- Parameterized Cursor --------
-delimiter %
+delimiter //
 create procedure shift_par(in lb int,in ub int)
 
 begin
@@ -72,10 +72,7 @@ declare finish int default 0;
 declare name varchar(20);
 declare comp varchar(20);
 declare curs cursor for select * from o_emp where o_eid between lb and ub;
-declare continue handler for not found
-begin
-set finish=1;
-end;
+declare continue handler for not found set finish=1;
 
 open curs;
 l:loop
@@ -88,7 +85,7 @@ insert into n_emp values(eid,name,comp);
 end if;
 end loop;
 close curs;
-end %
+end //
 delimiter;
 -------Calling Parameterized Cursor-------------
 call shift_par(12,169);
