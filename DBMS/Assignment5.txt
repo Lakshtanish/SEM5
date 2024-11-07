@@ -38,13 +38,6 @@ mysql> select * from studentMarks;
 |       9 | Anay     |   800 |
 +---------+----------+-------+
 
-
-
-
-
-
-
-
 DELIMITER //
 
 CREATE PROCEDURE calculateGrade(IN roll INT, OUT class VARCHAR(25))
@@ -53,11 +46,9 @@ BEGIN
     DECLARE n VARCHAR(25);
     DECLARE m INT;
 
-    -- Get marks and name based on roll number
     SELECT marks INTO m FROM studentmarks WHERE rollno = roll;
     SELECT name INTO n FROM studentmarks WHERE rollno = roll;
 
-    -- Determine grade based on marks
     IF (m >= 990 AND m <= 1500) THEN
         SET c = "Distinction";
     ELSEIF (m >= 900 AND m <= 989) THEN
@@ -68,15 +59,11 @@ BEGIN
         SET c = "N/A";
     END IF;
 
-    -- Insert result into result table (specify column names)
     INSERT INTO result (rollno, name, grade) VALUES (roll, n, c);
-
-    -- Set the output class parameter
     SET class = c;
 END //
 
 DELIMITER ;
-
 
 call calculateGrade(1,@class);		
 mysql> select @class;
@@ -93,9 +80,7 @@ mysql> select * from result;
 |      1 | Lakshya | N/A   |
 +--------+---------+-------+
 
- call calculateGrade(2,@class);
-Query OK, 1 row affected (0.00 sec)
-
+call calculateGrade(2,@class);
 mysql> select @class;
 +-------------+
 | @class      |
@@ -122,11 +107,9 @@ BEGIN
     DECLARE m INT;
     DECLARE n VARCHAR(25);
 
-    -- Retrieve marks and name based on roll number
     SELECT marks INTO m FROM studentmarks WHERE rollno = roll;
     SELECT name INTO n FROM studentmarks WHERE rollno = roll;
 
-    -- Determine grade based on marks
     IF (m >= 990 AND m <= 1500) THEN
         SET c = 'Distinction';
     ELSEIF (m >= 900 AND m <= 989) THEN
@@ -137,10 +120,7 @@ BEGIN
         SET c = 'N/A';
     END IF;
 
-    -- Insert result into the result table
     INSERT INTO result (rollno, name, grade) VALUES (roll, n, c);
-
-    -- Return the grade
     RETURN c;
 END //
 
