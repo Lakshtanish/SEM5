@@ -36,8 +36,8 @@ public class JDBC
 						int roll = result.getInt(1);
 						String name = result.getString(2);
 						String date = result.getString(3);
-                       String bookname = result.getString(4);
-                       System.out.println(roll + " " + name + " " + date + " " + bookname);
+					        String bookname = result.getString(4);
+					        System.out.println(roll + " " + name + " " + date + " " + bookname);
 					}
 				}
 				else if(ch == 2)
@@ -71,13 +71,13 @@ public class JDBC
 					System.out.println("Enter new bookname :");
 					statement.setString(1,sc.nextLine());
 					java.util.Date date=new java.util.Date();
-                   java.sql.Date sqlDate=new java.sql.Date(date.getTime());
-                   statement.setDate(2, sqlDate);
-                   int rowsupdate = statement.executeUpdate();
-                   if(rowsupdate > 0)
-                   {
-                   	System.out.println("A record has been updated successfully.");
-                   }
+				        java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+				        statement.setDate(2, sqlDate);
+				        int rowsupdate = statement.executeUpdate();
+				        if(rowsupdate > 0)
+				         {
+					    System.out.println("A record has been updated successfully.");
+				         } 
 				}
 				else if(ch == 4)
 				{
